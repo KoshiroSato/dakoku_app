@@ -7,13 +7,24 @@ button {
     cursor:pointer;
   }
 
-  button:hover{
+button:hover{
     opacity: 0.4;
   }
 
-  .break-button {
+.end_button{
+    background: yellow;
+    position: relative;
+    left: 280px;
+    bottom: 72px;
+  }
+
+.break-button {
+    background: lightgreen
+  }
+
+.restart-button {
     background: lightgreen;
     position: relative;
-    right: 487px;
-    top:110px;
+    bottom: 72px;
+    left: 280px;
   }
