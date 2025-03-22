@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="ja">
     <head>
-        <title>Flask</title>
+        <title>打刻アプリ</title>
         <meta charset="utf-8"/>
         <link rel="stylesheet" href="/static/css/style.css" type="text/css">
     </head>
     <body>
         <h1>打刻アプリ</h1>
-        <button type="submit"value="start">出勤</button>
-        <button type="submit"value="end">退勤</button>
-        <button type="submit"value="break"class="break-button">中断</button>
-        <button type="submit"value="restart"class="break-button">再開</button>
+        <button id="start_btn"type="submit"value="start">出勤</button>
+        <button id="end_btn"type="submit"value="end">退勤</button>
+        <button id="break_btn"type="submit"value="break"class="break-button">中断</button>
+        <button id="restart_btn"type="submit"value="restart"class="break-button">再開</button>
+        <script type="text/javascript" src="static/js/index.js"></script>
     </body>
 </html>

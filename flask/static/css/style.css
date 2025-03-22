@@ -4,13 +4,14 @@ button {
     font-size: 150%;
     font-weight: bold;
     background: yellow;
+    cursor:pointer;
+  }
+
+  button:hover{
+    opacity: 0.4;
   }
 
   .break-button {
-    width: 10em;
-    height:3em;
-    font-size: 150%;
-    font-weight: bold;
     background: lightgreen;
     position: relative;
     right: 487px;
