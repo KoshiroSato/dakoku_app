@@ -4,7 +4,9 @@ services:
      build: flask/
      container_name: flask
      volumes: 
-      - '.:/workspace/dakoku_app'
+       - '.:/workspace/dakoku_app'
+     environment:
+       TZ: Asia/Tokyo
      working_dir: '/workspace/dakoku_app/flask'
      tty: true
      ports:
