@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 
 def init_db():
-    db_filename = 'stamp.db'
+    db_filename = 'log.db'
 
     if os.path.exists(db_filename):
         return
@@ -12,7 +12,7 @@ def init_db():
     c = conn.cursor()
 
     c.execute('''
-        CREATE TABLE IF NOT EXISTS data (
+        CREATE TABLE IF NOT EXISTS stamp (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               start TEXT,
               end TEXT,
@@ -24,11 +24,23 @@ def init_db():
     conn.close()
 
 def insert_timestamp(stamp_value):
-    conn = sqlite3.connect('stamp.db')
+    conn = sqlite3.connect('log.db')
     c = conn.cursor()
 
     current_time = datetime.now().isoformat()
-    c.execute(f'INSERT INTO data ({stamp_value}) VALUES (?)', (current_time,))
+    # 空のレコードを探す
+    c.execute(
+        f"SELECT id FROM stamp WHERE {stamp_value} IS NULL OR {stamp_value} = '' ORDER BY id LIMIT 1"
+        )
+    row = c.fetchone()
+    
+    if row:
+        # 空のレコードがあれば、そのIDにデータを入れる
+        empty_id = row[0]
+        c.execute(f'UPDATE stamp SET {stamp_value} = ? WHERE id = ?', (current_time, empty_id))
+    else:
+        # 空のレコードがなければ、新規INSERT
+        c.execute(f'INSERT INTO stamp ({stamp_value}) VALUES (?)', (current_time,))
 
     conn.commit()
     conn.close()

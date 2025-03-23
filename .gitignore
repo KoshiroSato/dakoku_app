@@ -1,2 +1,2 @@
 flask/__pycache__/*
-flask/stamp.db
+flask/log.db
