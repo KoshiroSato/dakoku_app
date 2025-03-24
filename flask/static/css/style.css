@@ -28,3 +28,9 @@ button:hover{
     bottom: 72px;
     left: 280px;
   }
+
+.cancel-button {
+  background: lightblue;
+  position: relative;
+  left: 145px;
+}
