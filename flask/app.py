@@ -12,14 +12,21 @@ STAMP_DATES= {
     }
 
 @app.route('/', methods=['GET', 'POST'])
-def index():
+def handle_stamp():
     today = datetime.now().strftime('%Y-%m-%d')
     if request.method == 'POST':
-        stamp_value = request.form.get('stamp_value')
+        data = request.get_json()
+        stamp_value = data.get('stamp_value')
         # 同じ日に2度同じボタンは押せない
         if STAMP_DATES[stamp_value] != today:
             insert_timestamp(stamp_value)
             STAMP_DATES[stamp_value] = today
+    return render_template('index.html')
+
+@app.route('/cancel', methods=['POST'])
+def handle_cancel():
+    data = request.get_json()
+    cancel_value = data.get('cancel_value')
     return render_template('index.html')
 
 if __name__ == '__main__':

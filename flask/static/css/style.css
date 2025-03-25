@@ -14,8 +14,8 @@ button:hover{
 .end_button{
     background: yellow;
     position: relative;
-    left: 280px;
-    bottom: 72px;
+    /* left: 280px;
+    bottom: 72px; */
   }
 
 .break-button {
@@ -25,12 +25,12 @@ button:hover{
 .restart-button {
     background: lightgreen;
     position: relative;
-    bottom: 72px;
-    left: 280px;
+    /* bottom: 72px;
+    left: 280px; */
   }
 
 .cancel-button {
   background: lightblue;
   position: relative;
-  left: 145px;
+  /* left: 145px; */
 }

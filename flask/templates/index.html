@@ -7,19 +7,12 @@
     </head>
     <body>
         <h1>打刻アプリ</h1>
-        <form action="/"method="POST">
-            <button id="start_btn"type="submit"name="stamp_value"value="start"onclick="enableCancelButton()">出勤</button>    
+        <button id="start_btn"value="start">出勤</button>    
+        <button id="end_btn"value="end"class="end_button">退勤</button>
+        <button id="break_btn"value="break"class="break-button">中断</button>
+        <button id="restart_btn"value="restart"class="restart-button">再開</button>
         </form>
-        <form action="/"method="POST">
-            <button id="end_btn"type="submit"name="stamp_value"value="end"class="end_button"onclick="enableCancelButton()">退勤</button>
-        </form>
-        <form action="/"method="POST">
-            <button id="break_btn"type="submit"name="stamp_value"value="break"class="break-button"onclick="enableCancelButton()">中断</button>
-        </form>
-        <form action="/"method="POST">
-            <button id="restart_btn"type="submit"name="stamp_value"value="restart"class="restart-button"onclick="enableCancelButton()">再開</button>
-        </form>
-        <button id="cancel_btn"type="submit"name="cancel_value"value="cancel"class="cancel-button"onclick="disableCancelButton(this)">取り消し</button>      
+        <button id="cancel_btn"value="cancel"class="cancel-button"disabled>取り消し</button>      
         <script type="text/javascript" src="static/js/index.js"></script>
     </body>
 </html>
