@@ -4,7 +4,7 @@ from func import init_db, insert_timestamp
 
 app = Flask(__name__)
 
-PROCESS_STATUS = {
+STAMP_DATES= {
     'start': None,
     'end': None,
     'break': None,
@@ -17,9 +17,9 @@ def index():
     if request.method == 'POST':
         stamp_value = request.form.get('stamp_value')
         # 同じ日に2度同じボタンは押せない
-        if PROCESS_STATUS[stamp_value] != today:
+        if STAMP_DATES[stamp_value] != today:
             insert_timestamp(stamp_value)
-            PROCESS_STATUS[stamp_value] = today
+            STAMP_DATES[stamp_value] = today
     return render_template('index.html')
 
 if __name__ == '__main__':
