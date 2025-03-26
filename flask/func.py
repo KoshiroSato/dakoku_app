@@ -44,3 +44,12 @@ def insert_timestamp(stamp_value):
 
     conn.commit()
     conn.close()
+
+def delete_timestamp(stamp_value):
+    conn = sqlite3.connect('log.db')
+    c = conn.cursor()
+    c.execute(
+        f'UPDATE stamp SET {stamp_value} = NULL WHERE id = (SELECT MAX(id) FROM stamp)'
+        )
+    conn.commit()
+    conn.close()
