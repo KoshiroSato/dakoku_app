@@ -53,3 +53,6 @@ def delete_timestamp(stamp_value):
         )
     conn.commit()
     conn.close()
+
+def export_csv():
+    pass

@@ -15,23 +15,22 @@ button:hover {
 
 #end_btn {
     background: yellow;
-    width: 100%; 
-    margin-bottom: 50px;
   }
 
 #break_btn {
     background: lightgreen;
-    width: 100%; 
-    margin-bottom: 50px;
   }
 
 #restart_btn {
     background: lightgreen;
-    width: 100%; 
-    margin-bottom: 50px;
   }
 
 #cancel_btn {
   background: lightblue;
-  width: 100%; 
+}
+
+#download_btn {
+  background: lightgray;
+  margin-top: 100px;
+
 }
