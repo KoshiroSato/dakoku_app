@@ -1,2 +1,3 @@
 flask/__pycache__/*
 flask/log.db
+flask/past_records.csv

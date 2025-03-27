@@ -1,6 +1,7 @@
 import os
 import sqlite3
-from datetime import datetime
+import pandas as pd
+from datetime import datetime, timedelta
 
 def init_db():
     db_filename = 'log.db'
@@ -54,5 +55,14 @@ def delete_timestamp(stamp_value):
     conn.commit()
     conn.close()
 
-def export_csv():
-    pass
+def past_records_to_csv():
+    conn = sqlite3.connect('log.db')
+    two_months_ago = datetime.now() - timedelta(days=60)
+    two_months_ago_str = two_months_ago.strftime('%Y-%m-%d %H:%M:%S')
+    df = pd.read_sql_query(
+        'SELECT * FROM stamp WHERE start >= ? ORDER BY start ASC;',
+        conn,
+        params=(two_months_ago_str,)
+    )
+    conn.close()
+    df.to_csv('past_records.csv', index=False, encoding='utf-8')

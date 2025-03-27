@@ -1,6 +1,6 @@
 from datetime import datetime
-from flask import Flask, render_template, request
-from func import init_db, insert_timestamp, delete_timestamp
+from flask import Flask, render_template, request, send_file
+from func import init_db, insert_timestamp, delete_timestamp, past_records_to_csv
 
 app = Flask(__name__)
 
@@ -34,7 +34,14 @@ def handle_cancel():
 
     delete_timestamp(LAST_MINUTE_STAMP)
     STAMP_DATES[LAST_MINUTE_STAMP] = None
+    # これも不要かも
     return render_template('index.html')
+
+@app.route('/download_csv')
+def download_csv():
+    past_records_to_csv()
+    return send_file('past_records.csv', as_attachment=True, mimetype='text/csv')
+
 
 if __name__ == '__main__':
     init_db()

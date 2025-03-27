@@ -59,6 +59,10 @@ function disableCancelButton() {
   cancel_button.disabled = true;
 }
 
+function downloadCSV() {
+  window.location.href = '/download_csv'
+}
+
 // ボタンにイベントを設定
 document.getElementById('start_btn').addEventListener('click', () => sendStamp('start'));
 document.getElementById('end_btn').addEventListener('click', () => sendStamp('end'));
