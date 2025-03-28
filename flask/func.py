@@ -18,7 +18,8 @@ def init_db():
               start TEXT,
               end TEXT,
               break TEXT,
-              restart TEXT
+              restart TEXT,
+              duration INTEGER
         )
     ''')
     conn.commit()
@@ -46,6 +47,20 @@ def insert_timestamp(stamp_value):
     conn.commit()
     conn.close()
 
+def calc_duration():
+    conn = sqlite3.connect('log.db')
+    c = conn.cursor()
+
+    c.execute('''
+        UPDATE stamp
+        SET duration = 
+            (strftime('%s', end) - strftime('%s', start)) - 
+            COALESCE((strftime('%s', restart) - strftime('%s', break)), 0)
+        WHERE end IS NOT NULL AND start IS NOT NULL;
+   ''')
+    conn.commit()
+    conn.close()
+
 def delete_timestamp(stamp_value):
     conn = sqlite3.connect('log.db')
     c = conn.cursor()
@@ -54,6 +69,11 @@ def delete_timestamp(stamp_value):
         )
     conn.commit()
     conn.close()
+
+def format_duration(seconds):
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    return f'{hours}時間{minutes}分'
 
 def past_records_to_csv():
     conn = sqlite3.connect('log.db')
@@ -64,5 +84,6 @@ def past_records_to_csv():
         conn,
         params=(two_months_ago_str,)
     )
+    df['duration'] = df['duration'].map(format_duration)
     conn.close()
     df.to_csv('past_records.csv', index=False, encoding='utf-8')
