@@ -84,6 +84,9 @@ def past_records_to_csv():
         conn,
         params=(two_months_ago_str,)
     )
+    datetime_cols = ['start', 'end', 'break', 'restart']
+    df[datetime_cols] = df[datetime_cols].apply(pd.to_datetime)
+    df[datetime_cols] = df[datetime_cols].apply(lambda x: x.dt.strftime('%Y年%m月%d日%H時%M分'))
     df['duration'] = df['duration'].map(format_duration)
     conn.close()
     df.to_csv('past_records.csv', index=False, encoding='utf-8')
