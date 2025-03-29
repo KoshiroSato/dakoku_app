@@ -21,8 +21,17 @@ def handle_stamp():
     if request.method == 'POST':
         data = request.get_json()
         stamp_value = data.get('stamp_value')
+        # 出勤ボタンを押さずに中断ボタンを押せないようにする
+        if stamp_value == 'break' and STAMP_DATES['start'] == None:
+            pass
+        # 出勤ボタンを押さずに再開ボタンを押せないようにする
+        elif stamp_value == 'restart' and STAMP_DATES['start'] == None:
+            pass
+        # 出勤ボタンを押さずに退勤ボタンを押せないようにする
+        elif stamp_value == 'end' and STAMP_DATES['start'] == None:
+            pass
         # 中断ボタンを押さずに再開ボタンを押せないようにする
-        if stamp_value == 'restart' and STAMP_DATES['break'] == None:
+        elif stamp_value == 'restart' and STAMP_DATES['break'] == None:
             pass
         else:
             # 同じ日に（取り消しボタン使用時を除き）2度同じボタンは押せない
