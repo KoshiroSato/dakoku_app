@@ -94,13 +94,13 @@ def past_records_to_csv():
 def get_weather_info():
     try:
         jma_url = 'https://www.jma.go.jp/bosai/forecast/data/forecast/110000.json'
-        jma_json = requests.get(jma_url).json()    
+        jma_json = requests.get(jma_url).json()
 
-        weather_code = jma_json[0]['timeSeries'][0]['areas'][0]['weatherCodes'][0]
-        max_precip_avg = jma_json[1]['precipAverage']['areas'][0]['max']
-        min_precip_avg = jma_json[1]['precipAverage']['areas'][0]['min']
-        max_temp_avg = jma_json[1]['tempAverage']['areas'][0]['max']
-        min_temp_avg = jma_json[1]['tempAverage']['areas'][0]['min']
+        weather_code = int(jma_json[0]['timeSeries'][0]['areas'][0]['weatherCodes'][0])
+        max_precip_avg = float(jma_json[1]['precipAverage']['areas'][0]['max'])
+        min_precip_avg = float(jma_json[1]['precipAverage']['areas'][0]['min'])
+        max_temp_avg = float(jma_json[1]['tempAverage']['areas'][0]['max'])
+        min_temp_avg = float(jma_json[1]['tempAverage']['areas'][0]['min'])
         return weather_code, max_precip_avg, min_precip_avg, max_temp_avg, min_temp_avg
     except:
         return None, None, None, None, None
