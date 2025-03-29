@@ -101,6 +101,35 @@ def get_weather_info():
         min_precip_avg = float(jma_json[1]['precipAverage']['areas'][0]['min'])
         max_temp_avg = float(jma_json[1]['tempAverage']['areas'][0]['max'])
         min_temp_avg = float(jma_json[1]['tempAverage']['areas'][0]['min'])
-        return weather_code, max_precip_avg, min_precip_avg, max_temp_avg, min_temp_avg
+        return {
+            'weather_code': weather_code, 
+            'max_precip_avg': max_precip_avg, 
+            'min_precip_avg': min_precip_avg, 
+            'max_temp_avg': max_temp_avg, 
+            'min_temp_avg': min_temp_avg
+            }
     except:
-        return None, None, None, None, None
+        return {
+            'weather_code': None, 
+            'max_precip_avg': None, 
+            'min_precip_avg': None, 
+            'max_temp_avg': None, 
+            'min_temp_avg': None
+            }
+    
+def get_date_info():
+    today = datetime.today()
+
+    month = today.month
+    day = today.day
+    weekday = today.strftime('%A')
+
+    if month in [3, 4, 5]:
+        season = 'Spring'
+    elif month in [6, 7, 8]:
+        season = 'Summer'
+    elif month in [9, 10, 11]:
+        season = 'Autumn'
+    else:
+        season = 'Winter'
+    return {'month': month, 'day': day, 'weekday': weekday, 'season': season}
