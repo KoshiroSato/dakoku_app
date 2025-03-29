@@ -4,7 +4,7 @@ async function sendStamp(stamp_value) {
     const response = await fetch('/', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json' // JSONで送信
+        'Content-Type': 'application/json' 
       },
       body: JSON.stringify({ stamp_value: stamp_value })
     });
@@ -26,7 +26,7 @@ async function sendStamp(stamp_value) {
 // 取り消し送信
 async function sendCancel() {
   try {
-    const response = await fetch('/cancel', { // 別のエンドポイント例
+    const response = await fetch('/cancel', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -32,13 +32,8 @@ def handle_stamp():
 
 @app.route('/cancel', methods=['POST'])
 def handle_cancel():
-    # これは不要かも
-    data = request.get_json()
-    cancel_value = data.get('cancel_value')
-
     delete_timestamp(LAST_MINUTE_STAMP)
     STAMP_DATES[LAST_MINUTE_STAMP] = None
-    # これも不要かも
     return render_template('index.html')
 
 @app.route('/download_csv')
