@@ -62,6 +62,19 @@ def insert_timestamp(stamp_value):
     conn.commit()
     conn.close()
 
+def insert_info():
+    conn = sqlite3.connect('log.db')
+    c = conn.cursor()
+    weather_info = get_weather_info()
+    date_info = get_date_info()
+    info_data = {**weather_info, **date_info}
+    columns = ', '.join(info_data.keys())
+    values = tuple(info_data.values())
+    place_holders = ', '.join(['?' for _ in info_data])
+    c.execute(f'INSERT INTO info ({columns}) VALUES ({place_holders})', values)
+    conn.commit()
+    conn.close()
+
 def calc_duration():
     conn = sqlite3.connect('log.db')
     c = conn.cursor()
