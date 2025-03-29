@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, send_file
 from func import init_db, insert_timestamp, insert_info, calc_duration, delete_timestamp, past_records_to_csv
 
+
 app = Flask(__name__)
 
 STAMP_DATES= {
@@ -10,7 +11,9 @@ STAMP_DATES= {
     'break': None,
     'restart': None
     }
+
 LAST_MINUTE_STAMP = ''
+
 
 @app.route('/', methods=['GET', 'POST'])
 def handle_stamp():
@@ -30,11 +33,13 @@ def handle_stamp():
                 calc_duration()
     return render_template('index.html')
 
+
 @app.route('/cancel', methods=['POST'])
 def handle_cancel():
     delete_timestamp(LAST_MINUTE_STAMP)
     STAMP_DATES[LAST_MINUTE_STAMP] = None
     return render_template('index.html')
+
 
 @app.route('/download_csv')
 def download_csv():

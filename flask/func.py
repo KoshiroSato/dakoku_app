@@ -3,6 +3,7 @@ import sqlite3
 import pandas as pd
 from datetime import datetime, timedelta
 
+
 def init_db():
     db_filename = 'log.db'
 
@@ -40,6 +41,7 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 def insert_timestamp(stamp_value):
     conn = sqlite3.connect('log.db')
     c = conn.cursor()
@@ -62,6 +64,7 @@ def insert_timestamp(stamp_value):
     conn.commit()
     conn.close()
 
+
 def insert_info():
     conn = sqlite3.connect('log.db')
     c = conn.cursor()
@@ -74,6 +77,7 @@ def insert_info():
     c.execute(f'INSERT INTO info ({columns}) VALUES ({place_holders})', values)
     conn.commit()
     conn.close()
+
 
 def calc_duration():
     conn = sqlite3.connect('log.db')
@@ -89,6 +93,7 @@ def calc_duration():
     conn.commit()
     conn.close()
 
+
 def delete_timestamp(stamp_value):
     conn = sqlite3.connect('log.db')
     c = conn.cursor()
@@ -98,10 +103,12 @@ def delete_timestamp(stamp_value):
     conn.commit()
     conn.close()
 
+
 def format_duration(seconds):
     hours = seconds // 3600
     minutes = (seconds % 3600) // 60
     return f'{hours}時間{minutes}分'
+
 
 def past_records_to_csv():
     conn = sqlite3.connect('log.db')
@@ -118,6 +125,7 @@ def past_records_to_csv():
     df['duration'] = df['duration'].map(format_duration)
     conn.close()
     df.to_csv('past_records.csv', index=False, encoding='utf-8')
+
 
 def get_weather_info():
     try:
@@ -145,6 +153,7 @@ def get_weather_info():
             'min_temp_avg': None
             }
     
+
 def get_date_info():
     today = datetime.today()
 
