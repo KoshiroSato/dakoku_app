@@ -21,16 +21,20 @@ def handle_stamp():
     if request.method == 'POST':
         data = request.get_json()
         stamp_value = data.get('stamp_value')
-        # 同じ日に（取り消しボタン使用時を除き）2度同じボタンは押せない
-        if STAMP_DATES[stamp_value] != today:
-            insert_timestamp(stamp_value)
-            STAMP_DATES[stamp_value] = today
-            global LAST_MINUTE_STAMP 
-            LAST_MINUTE_STAMP = stamp_value
-            if stamp_value == 'start':
-                insert_info()
-            elif stamp_value == 'end':
-                calc_duration()
+        # 中断ボタンを押さずに再開ボタンを押せないようにする
+        if stamp_value == 'restart' and STAMP_DATES['break'] == None:
+            pass
+        else:
+            # 同じ日に（取り消しボタン使用時を除き）2度同じボタンは押せない
+            if STAMP_DATES[stamp_value] != today:
+                insert_timestamp(stamp_value)
+                STAMP_DATES[stamp_value] = today
+                global LAST_MINUTE_STAMP 
+                LAST_MINUTE_STAMP = stamp_value
+                if stamp_value == 'start':
+                    insert_info()
+                elif stamp_value == 'end':
+                    calc_duration()
     return render_template('index.html')
 
 
