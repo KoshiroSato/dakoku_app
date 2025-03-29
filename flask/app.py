@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Flask, render_template, request, send_file
-from func import init_db, insert_timestamp, insert_info, calc_duration, delete_timestamp, past_records_to_csv
+from func import init_db, insert_timestamp, insert_info, delete_info, calc_duration, delete_timestamp, past_records_to_csv
 
 
 app = Flask(__name__)
@@ -38,6 +38,8 @@ def handle_stamp():
 def handle_cancel():
     delete_timestamp(LAST_MINUTE_STAMP)
     STAMP_DATES[LAST_MINUTE_STAMP] = None
+    if LAST_MINUTE_STAMP == 'start':
+        delete_info()
     return render_template('index.html')
 
 

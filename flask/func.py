@@ -26,7 +26,7 @@ def init_db():
 
     c.execute('''
         CREATE TABLE IF NOT EXISTS info (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              id INTEGER PRIMARY KEY,
               month NUMERIC,
               day NUMERIC,
               weekday TEXT,
@@ -75,6 +75,15 @@ def insert_info():
     values = tuple(info_data.values())
     place_holders = ', '.join(['?' for _ in info_data])
     c.execute(f'INSERT INTO info ({columns}) VALUES ({place_holders})', values)
+    conn.commit()
+    conn.close()
+
+
+def delete_info():
+    # startの打刻を取り消した場合の処理
+    conn = sqlite3.connect('log.db')
+    c = conn.cursor()
+    c.execute('DELETE FROM info WHERE id = (SELECT MAX(id) FROM info)')
     conn.commit()
     conn.close()
 
