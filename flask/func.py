@@ -22,6 +22,21 @@ def init_db():
               duration INTEGER
         )
     ''')
+
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS info (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              month NUMERIC,
+              day NUMERIC,
+              weekday TEXT,
+              season TEXT,
+              weather_code NUMERIC,
+              max_precip_avg REAL,
+              min_precip_avg REAL,
+              max_temp_avg REAL,
+              min_temp_avg REAL
+        ) 
+   ''')
     conn.commit()
     conn.close()
 
