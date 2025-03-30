@@ -31,7 +31,7 @@ def init_db(config=config):
                 end TEXT,
                 break TEXT,
                 restart TEXT,
-                duration INTEGER
+                working_time INTEGER
             )
         ''')
 
@@ -95,7 +95,7 @@ def delete_info():
         c.execute('DELETE FROM info WHERE id = (SELECT MAX(id) FROM info)')
 
 
-def calc_duration():
+def calc_working_time():
     '''
     秒単位で勤務時間を計算
     '''
@@ -104,7 +104,7 @@ def calc_duration():
 
         c.execute('''
             UPDATE stamp
-            SET duration = 
+            SET working_time = 
                 (strftime('%s', end) - strftime('%s', start)) - 
                 COALESCE((strftime('%s', restart) - strftime('%s', break)), 0)
             WHERE end IS NOT NULL AND start IS NOT NULL;
@@ -123,7 +123,7 @@ def past_records_to_csv():
     '''
     過去60日分の打刻情報をCSVでエクスポート
     '''
-    def format_duration(seconds):
+    def format_working_time(seconds):
         hours = seconds // 3600
         minutes = (seconds % 3600) // 60
         return f'{hours}時間{minutes}分'
@@ -140,7 +140,7 @@ def past_records_to_csv():
     datetime_cols = ['start', 'end', 'break', 'restart']
     df[datetime_cols] = df[datetime_cols].apply(pd.to_datetime)
     df[datetime_cols] = df[datetime_cols].apply(lambda x: x.dt.strftime('%Y年%m月%d日%H時%M分'))
-    df['duration'] = df['duration'].map(format_duration)
+    df['working_time'] = df['working_time'].map(format_working_time)
     df.to_csv('past_records.csv', index=False, encoding='utf-8')
 
 

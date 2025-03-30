@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LinearRegression
 from func import get_db_connection
 
 
@@ -17,6 +18,9 @@ def seconds_to_minutes(seconds):
 
 
 def get_train_dataset():
+    '''
+    TODO: 正規化
+    '''
     with get_db_connection() as conn:
         train_df = pd.read_sql(
             'SELECT * FROM stamp JOIN info ON stamp.id = info.id;', 
@@ -26,7 +30,7 @@ def get_train_dataset():
     train_df.drop_duplicates(inplace=True)
     train_df.dropna(how='any', inplace=True)
     train_df = categorical_encoder(train_df)
-    train_df['duration'] = train_df['duration'].apply(seconds_to_minutes)
-    y_train = train_df['duration']
-    X_train = train_df.drop('duration', axis=1).to_numpy()
+    train_df['working_time'] = train_df['working_time'].apply(seconds_to_minutes)
+    y_train = train_df['working_time']
+    X_train = train_df.drop('working_time', axis=1).to_numpy()
     return X_train, y_train

@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Flask, render_template, request, send_file
-from func import init_db, insert_timestamp, insert_info, delete_info, calc_duration, delete_timestamp, past_records_to_csv
+from func import init_db, insert_timestamp, insert_info, delete_info, calc_working_time, delete_timestamp, past_records_to_csv
 
 
 app = Flask(__name__)
@@ -44,7 +44,7 @@ def handle_stamp():
                     insert_info()
                     # regression ml model
                 elif stamp_value == 'end':
-                    calc_duration()
+                    calc_working_time()
     return render_template('index.html')
 
 
