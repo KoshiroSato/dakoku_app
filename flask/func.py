@@ -4,13 +4,16 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 
-def init_db():
-    db_filename = 'log.db'
+config = {
+    'db_filename': 'log.db',
+}
 
-    if os.path.exists(db_filename):
+
+def init_db(config=config):
+    if os.path.exists(config['db_filename']):
         return
     
-    conn = sqlite3.connect(db_filename)
+    conn = sqlite3.connect(config['db_filename'])
     c = conn.cursor()
 
     c.execute('''
@@ -42,8 +45,8 @@ def init_db():
     conn.close()
 
 
-def insert_timestamp(stamp_value):
-    conn = sqlite3.connect('log.db')
+def insert_timestamp(stamp_value, config=config):
+    conn = sqlite3.connect(config['db_filename'])
     c = conn.cursor()
 
     current_time = datetime.now().isoformat()
@@ -68,9 +71,8 @@ def insert_timestamp(stamp_value):
     conn.close()
 
 
-
-def insert_info():
-    conn = sqlite3.connect('log.db')
+def insert_info(config=config):
+    conn = sqlite3.connect(config['db_filename'])
     c = conn.cursor()
     weather_info = get_weather_info()
     date_info = get_date_info()
@@ -83,17 +85,17 @@ def insert_info():
     conn.close()
 
 
-def delete_info():
+def delete_info(config=config):
     # startの打刻を取り消した場合の処理
-    conn = sqlite3.connect('log.db')
+    conn = sqlite3.connect(config['db_filename'])
     c = conn.cursor()
     c.execute('DELETE FROM info WHERE id = (SELECT MAX(id) FROM info)')
     conn.commit()
     conn.close()
 
 
-def calc_duration():
-    conn = sqlite3.connect('log.db')
+def calc_duration(config=config):
+    conn = sqlite3.connect(config['db_filename'])
     c = conn.cursor()
 
     c.execute('''
@@ -107,8 +109,8 @@ def calc_duration():
     conn.close()
 
 
-def delete_timestamp(stamp_value):
-    conn = sqlite3.connect('log.db')
+def delete_timestamp(stamp_value, config=config):
+    conn = sqlite3.connect(config['db_filename'])
     c = conn.cursor()
     c.execute(
         f'UPDATE stamp SET {stamp_value} = NULL WHERE id = (SELECT MAX(id) FROM stamp)'
@@ -123,8 +125,8 @@ def format_duration(seconds):
     return f'{hours}時間{minutes}分'
 
 
-def past_records_to_csv():
-    conn = sqlite3.connect('log.db')
+def past_records_to_csv(config=config):
+    conn = sqlite3.connect(config['db_filename'])
     two_months_ago = datetime.now() - timedelta(days=60)
     two_months_ago_str = two_months_ago.strftime('%Y-%m-%d %H:%M:%S')
     df = pd.read_sql_query(
