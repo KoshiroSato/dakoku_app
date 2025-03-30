@@ -42,6 +42,7 @@ def handle_stamp():
                 LAST_MINUTE_STAMP = stamp_value
                 if stamp_value == 'start':
                     insert_info()
+                    # regression ml model
                 elif stamp_value == 'end':
                     calc_duration()
     return render_template('index.html')

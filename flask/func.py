@@ -15,7 +15,9 @@ def init_db(config=config):
     
     conn = sqlite3.connect(config['db_filename'])
     c = conn.cursor()
-
+    
+    # 打刻情報を管理するstampテーブルと機械学習のための日時付加情報を管理する
+    # infoテーブルの作成
     c.execute('''
         CREATE TABLE IF NOT EXISTS stamp (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
