@@ -10,14 +10,16 @@ config = {
 
 
 def init_db(config=config):
+    '''
+    打刻情報を管理するstampテーブルと機械学習のための
+    日時付加情報を管理するinfoテーブルの作成
+    '''
     if os.path.exists(config['db_filename']):
         return
     
     conn = sqlite3.connect(config['db_filename'])
     c = conn.cursor()
     
-    # 打刻情報を管理するstampテーブルと機械学習のための日時付加情報を管理する
-    # infoテーブルの作成
     c.execute('''
         CREATE TABLE IF NOT EXISTS stamp (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -88,7 +90,9 @@ def insert_info(config=config):
 
 
 def delete_info(config=config):
-    # startの打刻を取り消した場合の処理
+    '''
+    startの打刻を取り消した場合の処理
+    '''
     conn = sqlite3.connect(config['db_filename'])
     c = conn.cursor()
     c.execute('DELETE FROM info WHERE id = (SELECT MAX(id) FROM info)')
@@ -97,6 +101,9 @@ def delete_info(config=config):
 
 
 def calc_duration(config=config):
+    '''
+    秒単位で勤務時間を計算
+    '''
     conn = sqlite3.connect(config['db_filename'])
     c = conn.cursor()
 
@@ -128,6 +135,9 @@ def format_duration(seconds):
 
 
 def past_records_to_csv(config=config):
+    '''
+    過去60日分の打刻情報をCSVでエクスポート
+    '''
     conn = sqlite3.connect(config['db_filename'])
     two_months_ago = datetime.now() - timedelta(days=60)
     two_months_ago_str = two_months_ago.strftime('%Y-%m-%d %H:%M:%S')
