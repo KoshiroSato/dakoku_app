@@ -47,14 +47,17 @@ def insert_timestamp(stamp_value):
     c = conn.cursor()
 
     current_time = datetime.now().isoformat()
-    # 空のレコードを探す
-    c.execute(
-        f"SELECT id FROM stamp WHERE {stamp_value} IS NULL OR {stamp_value} = '' ORDER BY id LIMIT 1"
-        )
+
+    # 空のレコードの中で最も大きなIDを探す
+    c.execute(f"""
+        SELECT id FROM stamp 
+        WHERE {stamp_value} IS NULL OR {stamp_value} = ''
+        ORDER BY id DESC LIMIT 1
+    """)
     row = c.fetchone()
-    
+
     if row:
-        # 空のレコードがあれば、そのIDにデータを入れる
+        # 最も大きなIDにデータを入れる
         empty_id = row[0]
         c.execute(f'UPDATE stamp SET {stamp_value} = ? WHERE id = ?', (current_time, empty_id))
     else:
@@ -63,6 +66,7 @@ def insert_timestamp(stamp_value):
 
     conn.commit()
     conn.close()
+
 
 
 def insert_info():
