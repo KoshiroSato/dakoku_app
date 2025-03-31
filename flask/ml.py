@@ -2,7 +2,7 @@ import joblib
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LinearRegression
-from func import get_db_connection
+from func import get_db_connection, get_record_length
 
 
 def categorical_encoder(df):
@@ -29,7 +29,6 @@ def get_train_dataset():
             )
     train_df.drop(columns=['id', 'start', 'end', 'break', 'restart'], inplace=True)
     train_df.drop_duplicates(inplace=True)
-    train_df.dropna(how='any', inplace=True)
     train_df = categorical_encoder(train_df)
     train_df['working_time'] = train_df['working_time'].apply(seconds_to_minutes)
     train_df.to_csv('output/train.csv', index=False)
@@ -61,11 +60,12 @@ def get_test_data():
 
 
 def model_fitting():
-    X_train, y_train = get_train_dataset()
-    model = LinearRegression(n_jobs=-1)
-    model.fit(X_train, y_train)
-    joblib.dump(model, 'output/model.pkl')
-    return model
+    db_length = get_record_length()
+    if db_length >= 90:
+        X_train, y_train = get_train_dataset()
+        model = LinearRegression(n_jobs=-1)
+        model.fit(X_train, y_train)
+        joblib.dump(model, 'output/model.pkl')
 
 
 def model_predict():
