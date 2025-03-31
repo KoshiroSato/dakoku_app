@@ -1,9 +1,9 @@
 from datetime import datetime
 from flask import Flask, render_template, request, send_file
+from flask_apscheduler import APScheduler
 from func import init_db, insert_timestamp, insert_info, delete_info, calc_working_time, delete_timestamp, get_record_length, past_records_to_csv
+from ml import model_fitting
 
-
-app = Flask(__name__)
 
 STAMP_DATES= {
     'start': None,
@@ -13,6 +13,21 @@ STAMP_DATES= {
     }
 
 LAST_MINUTE_STAMP = ''
+
+
+app = Flask(__name__)
+scheduler = APScheduler()
+
+# 機械学習モデルの訓練スケジューラー
+scheduler.add_job(
+    id='daily_task', 
+    func=model_fitting, 
+    trigger='cron',
+    hour=0, 
+    minute=0
+    )
+scheduler.init_app(app)
+scheduler.start()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -45,6 +60,7 @@ def handle_stamp():
                     db_length = get_record_length()
                     if db_length >= 90:
                         # regression ml model
+                        pass
                 elif stamp_value == 'end':
                     calc_working_time()
     return render_template('index.html')
