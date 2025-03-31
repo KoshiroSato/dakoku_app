@@ -127,6 +127,12 @@ def get_record_length():
     return length
 
 
+def format_leave_time(minutes):
+    now = datetime.now()
+    leave_time = now + timedelta(minutes=minutes)
+    return f'{leave_time.hour}時間{leave_time.minute}分'
+
+
 def past_records_to_csv():
     '''
     過去60日分の打刻情報をCSVでエクスポート

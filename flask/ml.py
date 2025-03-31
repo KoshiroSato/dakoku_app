@@ -4,7 +4,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression
-from func import get_db_connection, get_record_length
+from func import get_db_connection, get_record_length, format_leave_time
 
 
 def categorical_encoder(df):
@@ -82,4 +82,5 @@ def model_predict():
     model = joblib.load('output/model.pkl')
     pred = model.predict(X_test)
     pred = pred.astype(int)
-    return int(pred)
+    pred = format_leave_time(int(pred))
+    return pred
