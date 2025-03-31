@@ -35,10 +35,20 @@ def get_train_dataset():
     return X_train, y_train
 
 
+def get_test_dataset():
+    return X_test
+
+
 def model_fitting():
     X_train, y_train = get_train_dataset()
     model = LinearRegression(n_jobs=-1)
     model.fit(X_train, y_train)
     joblib.dump(model, 'output/model.pkl')
-    # model = joblib.load('output/model.pkl')
     return model
+
+
+def model_predict():
+    X_test = get_test_dataset()
+    model = joblib.load('output/model.pkl')
+    pred = model.predict(X_test)
+    return pred
