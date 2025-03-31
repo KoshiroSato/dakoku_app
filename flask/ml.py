@@ -1,3 +1,4 @@
+import joblib
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LinearRegression
@@ -32,3 +33,12 @@ def get_train_dataset():
     y_train = train_df['working_time']
     X_train = train_df.drop('working_time', axis=1).to_numpy()
     return X_train, y_train
+
+
+def model_fitting():
+    X_train, y_train = get_train_dataset()
+    model = LinearRegression(n_jobs=-1)
+    model.fit(X_train, y_train)
+    joblib.dump(model, 'output/model.pkl')
+    # model = joblib.load('output/model.pkl')
+    return model

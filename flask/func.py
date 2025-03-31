@@ -117,6 +117,14 @@ def delete_timestamp(stamp_value):
         c.execute(
             f'UPDATE stamp SET {stamp_value} = NULL WHERE id = (SELECT MAX(id) FROM stamp)'
             )
+        
+
+def get_record_length():
+    with get_db_connection() as conn:
+        c = conn.cursor()
+        c.execute('SELECT COUNT(*) FROM stamp')
+        length = c.fetchone()[0]
+    return length
 
 
 def past_records_to_csv():
