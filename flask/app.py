@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, send_file
 from flask_apscheduler import APScheduler
 from func import init_db, insert_timestamp, insert_info, delete_info, calc_working_time, delete_timestamp, get_record_length, past_records_to_csv
-from ml import model_fitting
+from ml import model_fitting, model_predict
 
 
 STAMP_DATES= {
@@ -60,8 +60,7 @@ def handle_stamp():
                     insert_info()
                     db_length = get_record_length()
                     if db_length >= 90 and os.path.exists('output.model.pkl'):
-                        # regression ml model
-                        pass
+                        pred = model_predict()
                 elif stamp_value == 'end':
                     calc_working_time()
     return render_template('index.html')
