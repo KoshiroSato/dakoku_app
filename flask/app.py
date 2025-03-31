@@ -60,7 +60,7 @@ def handle_cancel():
 @app.route('/download_csv')
 def download_csv():
     past_records_to_csv()
-    return send_file('past_records.csv', as_attachment=True, mimetype='text/csv')
+    return send_file('output/past_records.csv', as_attachment=True, mimetype='text/csv')
 
 
 if __name__ == '__main__':

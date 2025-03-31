@@ -18,19 +18,17 @@ def seconds_to_minutes(seconds):
 
 
 def get_train_dataset():
-    '''
-    TODO: 正規化
-    '''
     with get_db_connection() as conn:
         train_df = pd.read_sql(
             'SELECT * FROM stamp JOIN info ON stamp.id = info.id;', 
             conn
             )
-    train_df.drop(columns=['id', 'start', 'end', 'break', 'restart', 'id.1'], inplace=True)
+    train_df.drop(columns=['id', 'start', 'end', 'break', 'restart'], inplace=True)
     train_df.drop_duplicates(inplace=True)
     train_df.dropna(how='any', inplace=True)
     train_df = categorical_encoder(train_df)
     train_df['working_time'] = train_df['working_time'].apply(seconds_to_minutes)
+    train_df.to_csv('output/train.csv', index=False)
     y_train = train_df['working_time']
     X_train = train_df.drop('working_time', axis=1).to_numpy()
     return X_train, y_train

@@ -141,7 +141,7 @@ def past_records_to_csv():
     df[datetime_cols] = df[datetime_cols].apply(pd.to_datetime)
     df[datetime_cols] = df[datetime_cols].apply(lambda x: x.dt.strftime('%Y年%m月%d日%H時%M分'))
     df['working_time'] = df['working_time'].map(format_working_time)
-    df.to_csv('past_records.csv', index=False, encoding='utf-8')
+    df.to_csv('output/past_records.csv', index=False, encoding='utf-8')
 
 
 def get_weather_info():
