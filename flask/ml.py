@@ -28,6 +28,7 @@ def get_train_dataset():
             )
     train_df.drop(columns=['id', 'start', 'end', 'break', 'restart'], inplace=True)
     train_df.drop_duplicates(inplace=True)
+    # 学習データなので目的変数が空の場合はその行を削除
     train_df.dropna(subset=['working_time'], inplace=True)
     train_df = categorical_encoder(train_df)
     train_df['working_time'] = train_df['working_time'].apply(seconds_to_minutes)
@@ -80,4 +81,5 @@ def model_predict():
     X_test = get_test_data()
     model = joblib.load('output/model.pkl')
     pred = model.predict(X_test)
-    return pred
+    pred = pred.astype(int)
+    return int(pred)
