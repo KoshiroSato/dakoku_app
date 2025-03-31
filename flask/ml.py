@@ -19,6 +19,9 @@ def seconds_to_minutes(seconds):
 
 
 def get_train_dataset():
+    '''
+    TODO: 欠損値対策
+    '''
     with get_db_connection() as conn:
         train_df = pd.read_sql(
             'SELECT * FROM stamp JOIN info ON stamp.id = info.id;', 
@@ -35,7 +38,25 @@ def get_train_dataset():
     return X_train, y_train
 
 
-def get_test_dataset():
+def get_test_data():
+    '''
+    TODO: 欠損値対策
+    '''
+    with get_db_connection() as conn:
+        query = '''
+        SELECT 
+            stamp.*,
+            info.*
+        FROM
+            (SELECT * FROM stamp ORDER BY id DESC LIMIT 1) AS stamp
+        JOIN
+            (SELECT * FROM info ORDER BY id DESC LIMIT 1) AS info
+        ON stamp.id = info.id;
+        '''
+        test_df = pd.read_sql(query, conn)
+    test_df.drop(columns=['id', 'start', 'end', 'break', 'restart', 'working_time'], inplace=True)
+    test_df = categorical_encoder(test_df)
+    X_test = test_df.to_numpy()
     return X_test
 
 
@@ -48,7 +69,7 @@ def model_fitting():
 
 
 def model_predict():
-    X_test = get_test_dataset()
+    X_test = get_test_data()
     model = joblib.load('output/model.pkl')
     pred = model.predict(X_test)
     return pred

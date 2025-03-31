@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from flask import Flask, render_template, request, send_file
 from flask_apscheduler import APScheduler
@@ -58,7 +59,7 @@ def handle_stamp():
                 if stamp_value == 'start':
                     insert_info()
                     db_length = get_record_length()
-                    if db_length >= 90:
+                    if db_length >= 90 and os.path.exists('output.model.pkl'):
                         # regression ml model
                         pass
                 elif stamp_value == 'end':
