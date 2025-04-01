@@ -12,7 +12,11 @@ async function sendStamp(stamp_value) {
     if (response.ok) {
       console.log(`${stamp_value} 打刻成功`);
       enableCancelButton();
-      alert('打刻されました。');
+      
+      // stamp_valueが 'start' でない場合、アラートを出す
+      if (stamp_value !== 'start') {
+        alert('打刻されました。');
+      }
     } else {
       console.error('送信失敗:', response.statusText);
       alert('打刻に失敗しました');
@@ -47,6 +51,30 @@ async function sendCancel() {
     alert('サーバーと通信できません');
   }
 }
+
+// 出勤打刻時実行
+document.addEventListener('DOMContentLoaded', function () {
+  var alertButton = document.getElementById('start_btn');
+
+  alertButton.addEventListener('click', function () {
+      alert('本日の業務を開始します。'); // アラートを表示
+      window.location.href = '/predict'; // フラッシュメッセージをセットするエンドポイントへリダイレクト
+  });
+
+  if (messages.length > 0) {
+      var messageBox = document.getElementById('flash-message');
+      messageBox.textContent = messages.join('\n');
+      messageBox.style.display = 'block'; // メッセージを表示
+
+      // 5秒後にフェードアウト
+      setTimeout(function () {
+          messageBox.style.opacity = '0';
+          setTimeout(function () {
+              messageBox.style.display = 'none';
+          }, 500);
+      }, 5000);
+  }
+});
 
 // ボタンの有効・無効制御
 function enableCancelButton() {

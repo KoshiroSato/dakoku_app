@@ -7,12 +7,16 @@
     </head>
     <body>
         <h1>打刻アプリ</h1>
-        <button id="start_btn"value="start">出勤</button>    
+        <button id="start_btn"value="start">出勤</button>
+        <div id="flash-message"></div>   
         <button id="end_btn"value="end">退勤</button>
         <button id="break_btn"value="break">中断</button>
         <button id="restart_btn"value="restart">再開</button>
         <button id="cancel_btn"value="cancel"class="cancel-button"disabled>取り消し</button>
         <button id="download_btn"onclick="downloadCSV()">CSVをダウンロード</button>
+        <script>
+            var messages = {{ get_flashed_messages() | tojson }};
+        </script>
         <script type="text/javascript" src="static/js/script.js"></script>
     </body>
 </html>

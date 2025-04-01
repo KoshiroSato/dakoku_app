@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect, url_for, flash
 from flask_apscheduler import APScheduler
 from func import init_db, insert_timestamp, insert_info, delete_info, calc_working_time, delete_timestamp, get_record_length, past_records_to_csv
 from ml import model_fitting, model_predict
@@ -17,6 +17,7 @@ LAST_MINUTE_STAMP = ''
 
 
 app = Flask(__name__)
+app.secret_key = 'YOUR_SECRET_KEY'  # セッションの暗号化キー
 scheduler = APScheduler()
 
 # 機械学習モデルの訓練スケジューラー
@@ -52,9 +53,6 @@ def handle_stamp():
                 LAST_MINUTE_STAMP = stamp_value
                 if stamp_value == 'start':
                     insert_info()
-                    db_length = get_record_length()
-                    if db_length >= 90 and os.path.exists('output.model.pkl'):
-                        pred = model_predict()
                 elif stamp_value == 'end':
                     calc_working_time()
     return render_template('index.html')
@@ -67,6 +65,18 @@ def handle_cancel():
     if LAST_MINUTE_STAMP == 'start':
         delete_info()
     return render_template('index.html')
+
+
+@app.route('/predict')
+def ml_predict():
+    db_length = get_record_length()
+    if db_length >= 90 and os.path.exists('output/model.pkl'):
+        pred = model_predict()
+        pred = f'本日の予想退勤時間は{pred}です。'
+    else:
+        pred = '今日も1日頑張りましょう。'
+    flash(pred, 'pred')  
+    return redirect(url_for('handle_stamp'))  
 
 
 @app.route('/download_csv')
