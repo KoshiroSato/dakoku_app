@@ -40,10 +40,10 @@ def handle_stamp():
         stamp_value = data.get('stamp_value')
         # 出勤ボタンを押さずに他のボタンを押せないようにする
         if stamp_value in ['break', 'restart', 'end'] and STAMP_DATES['start'] == None:
-            pass
+            return render_template('index.html')
         # 中断ボタンを押さずに再開ボタンを押せないようにする
         elif stamp_value == 'restart' and STAMP_DATES['break'] == None:
-            pass
+            return render_template('index.html')
         else:
             # 同じ日に（取り消しボタン使用時を除き）2度同じボタンは押せない
             if STAMP_DATES[stamp_value] != today:
