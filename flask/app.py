@@ -13,11 +13,11 @@ STAMP_DATES= {
     'restart': None
     }
 
-LAST_MINUTE_STAMP = ''
+JUST_BEFORE_STAMP = ''
 
 
 app = Flask(__name__)
-app.secret_key = 'YOUR_SECRET_KEY'  # セッションの暗号化キー
+app.secret_key = os.environ.get('SECRET_KEY')
 scheduler = APScheduler()
 
 # 機械学習モデルの訓練スケジューラー
@@ -49,8 +49,8 @@ def handle_stamp():
             if STAMP_DATES[stamp_value] != today:
                 insert_timestamp(stamp_value)
                 STAMP_DATES[stamp_value] = today
-                global LAST_MINUTE_STAMP 
-                LAST_MINUTE_STAMP = stamp_value
+                global JUST_BEFORE_STAMP 
+                JUST_BEFORE_STAMP = stamp_value
                 if stamp_value == 'start':
                     insert_info()
                 elif stamp_value == 'end':
@@ -60,9 +60,9 @@ def handle_stamp():
 
 @app.route('/cancel', methods=['POST'])
 def handle_cancel():
-    delete_timestamp(LAST_MINUTE_STAMP)
-    STAMP_DATES[LAST_MINUTE_STAMP] = None
-    if LAST_MINUTE_STAMP == 'start':
+    delete_timestamp(JUST_BEFORE_STAMP)
+    STAMP_DATES[JUST_BEFORE_STAMP] = None
+    if JUST_BEFORE_STAMP == 'start':
         delete_info()
     return render_template('index.html')
 

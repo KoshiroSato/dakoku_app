@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var alertButton = document.getElementById('start_btn');
 
   alertButton.addEventListener('click', function () {
-      alert('本日の業務を開始します。'); // アラートを表示
+      alert('本日の業務を開始します。'); 
       window.location.href = '/predict'; // フラッシュメッセージをセットするエンドポイントへリダイレクト
   });
 
