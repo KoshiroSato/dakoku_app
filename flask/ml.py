@@ -7,11 +7,19 @@ from sklearn.linear_model import LinearRegression
 from func import get_db_connection, get_record_length, format_leave_time
 
 
-def categorical_encoder(df):
+def categorical_encoder(df, mode='train'):
     categorical_cols = ['month', 'day', 'weekday', 'season', 'weather_code']
-    for col in categorical_cols:
-        le = LabelEncoder()
-        df[col] = le.fit_transform(df[col].values)
+    encoders = {}
+    if mode == 'train':
+        for col in categorical_cols:
+            le = LabelEncoder()
+            df[col] = le.fit_transform(df[col].values)
+            encoders[col] = le
+        joblib.dump(encoders, 'output/label_encoders.pkl')
+    elif mode == 'test':
+        encoders = joblib.load('output/label_encoders.pkl')
+        for col in categorical_cols:
+            df[col] = encoders[col].transform(df[col].values)
     return df
 
 
@@ -30,7 +38,7 @@ def get_train_dataset():
     train_df.drop_duplicates(inplace=True)
     # 学習データなので目的変数が空の場合はその行を削除
     train_df.dropna(subset=['working_time'], inplace=True)
-    train_df = categorical_encoder(train_df)
+    train_df = categorical_encoder(train_df, mode='train')
     train_df['working_time'] = train_df['working_time'].apply(seconds_to_minutes)
     train_df.to_csv('output/train.csv', index=False)
     y_train = train_df['working_time']
@@ -50,18 +58,14 @@ def get_train_dataset():
 def get_test_data():
     with get_db_connection() as conn:
         query = '''
-        SELECT 
-            stamp.*,
-            info.*
-        FROM
-            (SELECT * FROM stamp ORDER BY id DESC LIMIT 1) AS stamp
-        JOIN
-            (SELECT * FROM info ORDER BY id DESC LIMIT 1) AS info
-        ON stamp.id = info.id;
+        SELECT * FROM stamp
+        JOIN info ON stamp.id = info.id
+        WHERE stamp.id = (SELECT MAX(id) FROM
+        stamp);
         '''
         test_df = pd.read_sql(query, conn)
     test_df.drop(columns=['id', 'start', 'end', 'break', 'restart', 'working_time'], inplace=True)
-    test_df = categorical_encoder(test_df)
+    test_df = categorical_encoder(test_df, mode='test')
     # 欠損値補完
     transformer = joblib.load('output/transformer.pkl')
     X_test = transformer.transform(test_df)

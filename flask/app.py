@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, send_file, redirect, url_for, flash
+from flask import Flask, render_template, request, send_file, redirect, url_for, flash, session
 from flask_apscheduler import APScheduler
 from func import init_db, insert_timestamp, insert_info, delete_info, calc_working_time, delete_timestamp, get_record_length, past_records_to_csv
 from ml import model_fitting, model_predict
@@ -12,8 +12,6 @@ STAMP_DATES= {
     'break': None,
     'restart': None
     }
-
-JUST_BEFORE_STAMP = ''
 
 
 app = Flask(__name__)
@@ -49,8 +47,7 @@ def handle_stamp():
             if STAMP_DATES[stamp_value] != today:
                 insert_timestamp(stamp_value)
                 STAMP_DATES[stamp_value] = today
-                global JUST_BEFORE_STAMP 
-                JUST_BEFORE_STAMP = stamp_value
+                session['just_before_stamp'] = stamp_value
                 if stamp_value == 'start':
                     insert_info()
                 elif stamp_value == 'end':
@@ -60,10 +57,13 @@ def handle_stamp():
 
 @app.route('/cancel', methods=['POST'])
 def handle_cancel():
-    delete_timestamp(JUST_BEFORE_STAMP)
-    STAMP_DATES[JUST_BEFORE_STAMP] = None
-    if JUST_BEFORE_STAMP == 'start':
-        delete_info()
+    just_before_stamp = session.get('just_before_stamp')
+    if just_before_stamp:
+        delete_timestamp(just_before_stamp)
+        STAMP_DATES[just_before_stamp] = None
+        if just_before_stamp == 'start':
+            delete_info()
+        session.pop('just_before_stamp', None)
     return render_template('index.html')
 
 
