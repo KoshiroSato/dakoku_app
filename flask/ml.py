@@ -76,7 +76,7 @@ def model_fitting():
     db_length = get_record_length()
     if db_length >= 90:
         X_train, y_train = get_train_dataset()
-        model = LinearRegression(n_jobs=-1)
+        model = LinearRegression()
         model.fit(X_train, y_train)
         joblib.dump(model, 'output/model.pkl')
 
