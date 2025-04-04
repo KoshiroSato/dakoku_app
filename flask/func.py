@@ -25,7 +25,7 @@ def init_db(config=config):
         c = conn.cursor()
         
         c.execute('''
-            CREATE TABLE IF NOT EXISTS stamp (
+            CREATE TABLE stamp (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 start TEXT,
                 end TEXT,
@@ -36,7 +36,7 @@ def init_db(config=config):
         ''')
 
         c.execute('''
-            CREATE TABLE IF NOT EXISTS info (
+            CREATE TABLE info (
                 id INTEGER PRIMARY KEY,
                 month NUMERIC,
                 day NUMERIC,
