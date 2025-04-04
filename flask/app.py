@@ -29,6 +29,8 @@ scheduler.add_job(
 scheduler.init_app(app)
 scheduler.start()
 
+init_db()
+
 
 @app.route('/', methods=['GET', 'POST'])
 def handle_stamp():
@@ -83,8 +85,3 @@ def ml_predict():
 def download_csv():
     past_records_to_csv()
     return send_file('output/past_records.csv', as_attachment=True, mimetype='text/csv')
-
-
-if __name__ == '__main__':
-    init_db()
-    app.run(threaded=True)
