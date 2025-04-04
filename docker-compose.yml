@@ -11,3 +11,6 @@ services:
      tty: true
      ports:
        - '8000:5000' 
+     env_file:
+       - .env
+     command: gunicorn -c config.py
