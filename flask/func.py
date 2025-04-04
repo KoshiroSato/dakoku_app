@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 
 config = {
-    'db_filename': 'log.db',
+    'db_filename': os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log.db'),
 }
 
 
