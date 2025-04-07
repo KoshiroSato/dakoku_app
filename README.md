@@ -7,6 +7,15 @@
 ## Usage
 
 セッション管理用のシークレットキーを環境変数として`.env`で用意。
+
+### `.env` 
+
 ```
 export SECRET_KEY=YOUR_SECRET_KEY
+```
+
+アプリの起動。
+
+```
+$ docker-compose up -d --build
 ```
