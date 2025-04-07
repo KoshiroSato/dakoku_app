@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 from func import get_db_connection, get_record_length, format_leave_time
 
 
@@ -76,7 +76,7 @@ def model_fitting():
     db_length = get_record_length()
     if db_length >= 90:
         X_train, y_train = get_train_dataset()
-        model = LinearRegression()
+        model = RandomForestRegressor(random_state=42)
         model.fit(X_train, y_train)
         joblib.dump(model, 'output/model.pkl')
 
