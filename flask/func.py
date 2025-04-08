@@ -153,8 +153,13 @@ def past_records_to_csv():
 
     datetime_cols = ['start', 'end', 'break', 'restart']
     df[datetime_cols] = df[datetime_cols].apply(pd.to_datetime)
-    df[datetime_cols] = df[datetime_cols].apply(lambda x: x.dt.strftime('%Y年%m月%d日%H時%M分'))
+    # 年と月日と時刻を分離して格納する
+    df['year'] = df['start'].dt.strftime('%Y年')
+    df['month'] = df['start'].dt.strftime('%m月%d日')
+    df[datetime_cols] = df[datetime_cols].apply(lambda x: x.dt.strftime('%H時%M分'))
     df['working_time'] = df['working_time'].map(format_working_time)
+    df.drop(columns=['id'], inplace=True)
+    df = df[['year', 'month', 'start', 'end', 'break', 'restart', 'working_time']]
     df.to_csv('output/past_records.csv', index=False, encoding='utf-8')
 
 
