@@ -1,13 +1,16 @@
 button {
-    width: 10em;
+    width: 50%;
     height:3em;
     font-size: 150%;
     font-weight: bold;
     background: yellow;
-    cursor:pointer;
-    width: 100%; 
+    cursor:pointer; 
     margin-bottom: 50px;
   }
+
+.wrapper {
+  text-align: center;
+}
 
 button:hover {
     opacity: 0.4;
