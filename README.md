@@ -4,6 +4,8 @@
 
 退勤時間を機械学習モデルが予測する。
 
+![dakoku_app_screen_shot.png](img/dakoku_app_screen_shot.png)
+
 ## Usage
 
 セッション管理用のシークレットキーを環境変数として`.env`で用意。
