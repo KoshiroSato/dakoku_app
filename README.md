@@ -6,6 +6,10 @@
 
 ![dakoku_app_screen_shot.png](img/dakoku_app_screen_shot.png)
 
+## Overview
+
+![overview.png](img/overview.png)
+
 ## Usage
 
 セッション管理用のシークレットキーを環境変数として`.env`で用意。
