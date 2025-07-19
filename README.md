@@ -1,5 +1,7 @@
 # dakoku_app
 
+http://dakokuapp.com/
+
 勤怠管理アプリ。
 
 退勤時間を機械学習モデルが予測する。
