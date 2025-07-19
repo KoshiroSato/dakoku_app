@@ -26,6 +26,19 @@ services:
      networks:
        - flask_network
 
+   test:
+     build: flask/
+     container_name: test
+     volumes:
+       - '.:/workspace/dakoku_app'
+     working_dir: '/workspace/dakoku_app/flask'
+     environment:
+       - FLASK_ENV=testing
+     command: tail -f /dev/null
+     networks:
+       - flask_network
+ 
+
 networks:
   flask_network:
     driver: bridge

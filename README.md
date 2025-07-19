@@ -19,3 +19,15 @@ export SECRET_KEY=YOUR_SECRET_KEY
 ```
 $ docker-compose up -d --build
 ```
+
+## Running Tests
+
+testコンテナにexecして
+
+```
+$ docker-compose exec test bash
+```
+実行
+```
+# pytest test
+```
