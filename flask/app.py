@@ -22,7 +22,8 @@ scheduler = APScheduler()
 db_manager = DatabaseManager()
 stamp_manager = StampManager(db_manager)
 info_manager = InfoManager(db_manager)
-ml_model = MLModel(stamp_manager, CreateDataset)
+dataset = CreateDataset(db_manager)
+ml_model = MLModel(stamp_manager, dataset)
 
 # 機械学習モデルの訓練スケジューラー
 scheduler.add_job(
